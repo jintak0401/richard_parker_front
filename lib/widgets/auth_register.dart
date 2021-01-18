@@ -5,8 +5,11 @@ import 'package:richard_parker/constants/text_input_deco.dart';
 import 'package:richard_parker/widgets/auth_logo.dart';
 
 class AuthRegister extends StatefulWidget {
+  // 회원가입 버튼 눌렀을 때 호출
   final Function requestRegister;
+  // 이메일 입력 박스 controller
   final TextEditingController emailController;
+  // 닉네임 입력 박스 controller
   final TextEditingController nickController;
 
   const AuthRegister(
@@ -28,7 +31,9 @@ class _AuthRegisterState extends State<AuthRegister> {
 
   @override
   void dispose() {
+    // 이메일 입력 박스 focus 여부를 다루기 위한 FocusNode
     _emailFocusNode.dispose();
+    // 닉네임 입력 박스 focus 여부를 다루기 위한 FocusNode
     _nickFocusNode.dispose();
     super.dispose();
   }
@@ -44,12 +49,16 @@ class _AuthRegisterState extends State<AuthRegister> {
           child: ListView(
             children: <Widget>[
               SizedBox(height: size.width / 5),
+              // 리차드 파커 로고
               AuthLogo(),
               SizedBox(height: size.width / 5),
+              // 이메일 입력 박스
               _emailInputBox(),
               SizedBox(height: common_l_gap),
+              // 닉네임 입력 박스
               _nickInputBox(),
               SizedBox(height: common_l_gap),
+              // 회원가입 버튼
               _registerButton(),
             ],
           ),
@@ -58,11 +67,16 @@ class _AuthRegisterState extends State<AuthRegister> {
     );
   }
 
+  // 회원가입 버튼
   TextButton _registerButton() {
     return TextButton(
+      // 눌렀을 때
       onPressed: () {
+        // 이메일 & 닉네임 입력박스 focus 해제
         _emailFocusNode.unfocus();
         _nickFocusNode.unfocus();
+        // 입력 서식이 올바를 경우
+        // AuthScreen 의 _requestRegister() 호출
         if (_formKey.currentState.validate()) {
           widget.requestRegister();
         }
@@ -81,12 +95,14 @@ class _AuthRegisterState extends State<AuthRegister> {
     );
   }
 
+  // 닉네입 입력 박스
   TextFormField _nickInputBox() {
     return TextFormField(
       controller: widget.nickController,
       decoration: textInputDeco('닉네임'),
       focusNode: _nickFocusNode,
       validator: (String text) {
+        // 1 <= 닉네임 길이 <= 9 인지 확인
         if (0 < text.length && text.length < 10) {
           return null;
         } else {
@@ -96,12 +112,14 @@ class _AuthRegisterState extends State<AuthRegister> {
     );
   }
 
+  // 이메일 입력 박스
   TextFormField _emailInputBox() {
     return TextFormField(
       controller: widget.emailController,
       decoration: textInputDeco('이메일'),
       focusNode: _emailFocusNode,
       validator: (String text) {
+        // 일단 '@' 글자 포함 여부만 확인
         if (text.contains('@')) {
           return null;
         } else {

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:richard_parker/utils/https.dart';
 
+// 로그아웃 버튼만 있는 임시 홈 화면
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

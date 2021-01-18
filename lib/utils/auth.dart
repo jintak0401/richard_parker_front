@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
 
+// auth 와 관련된 함수만 이용가능한 class
+// 모든 함수를 static 함수로 구현
+// error 는 여기서 catch 하여 { 'msg': 'err' } 등의 형태로 return
 class Auth {
   static final _dio = Dio(
     BaseOptions(
+      // auth 와 관련한 요청만 다루는 class 이므로, baseUrl 을 다음과 같이 설정
       baseUrl: "http://10.0.2.2:8010/auth",
       connectTimeout: 5000,
       receiveTimeout: 3000,
@@ -19,7 +23,8 @@ class Auth {
       Map<String, dynamic> body = response.data;
       return body;
     } catch (err) {
-      throw err;
+      print('/utils/auth.dart(getNewTokens) => $err');
+      return {'msg': 'err'};
     }
   }
 
@@ -46,6 +51,8 @@ class Auth {
     }
   }
 
+  // 없는 계정일 때: 'no account', 메일 전송시: 'send mail', 로그인 됐을 때: 'done', 5번 이상 틀렸을 때: 'retry'
+  // 로그인 요청시간 지났을 때: 'expired', 인증번호 불일치 시: 'not equal', 에러시 "err"
   static Future<Map<String, dynamic>> login(String email,
       [int checkNum, String msg]) async {
     final Map<String, dynamic> attachment = {
@@ -58,7 +65,8 @@ class Auth {
       Map<String, dynamic> body = response.data;
       return body;
     } catch (err) {
-      throw err;
+      print("/utils/auth.dart(login) => $err");
+      return {'msg': 'err'};
     }
   }
 }

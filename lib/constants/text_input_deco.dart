@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'common_size.dart';
 
+// auth 관련 페이지의 TextFromField 의 decoration 에서 사용
 InputDecoration textInputDeco(String hint) {
   return InputDecoration(
     enabledBorder: _activeInputBorder(),
