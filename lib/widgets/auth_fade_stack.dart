@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// auth 스크린에서 자연스러운 화면 전환을 위한 위젯
 class AuthFadeStack extends StatefulWidget {
   final int authScreenIndex;
   final List<Widget> authScreens;

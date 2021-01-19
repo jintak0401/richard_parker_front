@@ -1,48 +1,92 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:richard_parker/utils/https.dart';
+import 'package:richard_parker/constants/screen_size.dart';
+import 'package:richard_parker/screens/profile_screen.dart';
 
 // 로그아웃 버튼만 있는 임시 홈 화면
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  static const List<BottomNavigationBarItem> btmNavItems = [
+    BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
+    BottomNavigationBarItem(icon: Icon(Icons.menu_book_outlined), label: '위키'),
+    BottomNavigationBarItem(icon: Icon(Icons.map_outlined), label: '지도'),
+    BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: '계정'),
+  ];
+
+  static final List<Widget> _screens = <Widget>[
+    Container(
+      color: Colors.greenAccent,
+    ),
+    Container(
+      color: Colors.blueAccent,
+    ),
+    Container(
+      color: Colors.amberAccent,
+    ),
+    ProfileScreen(),
+  ];
+
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    if (size == null) size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        middle: Text('홈 화면'),
+      key: _key,
+      // appBar: CupertinoNavigationBar(
+      //   middle: Text('홈 화면'),
+      //   trailing: IconButton(
+      //       icon: Icon(Icons.menu),
+      //       onPressed: () {
+      //         _key.currentState.openEndDrawer();
+      //       }),
+      // ),
+      // endDrawer: Container(
+      //   width: 200,
+      //   child: Drawer(
+      //     child: ListView(
+      //       children: <Widget>[
+      //         DrawerHeader(
+      //           child: Text(
+      //             'Drawer Header',
+      //             textAlign: TextAlign.center,
+      //           ),
+      //           decoration: BoxDecoration(
+      //             color: Colors.blueAccent,
+      //           ),
+      //         ),
+      //         TextButton(onPressed: () {}, child: Text('진탁')),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _screens,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Https.logout();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/auth', (Route<dynamic> route) => false);
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '로그아웃',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: btmNavItems,
+        iconSize: 30,
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.black87,
+        unselectedItemColor: Colors.grey,
+        onTap: onTapBtmNavItems,
       ),
     );
+  }
+
+  void onTapBtmNavItems(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 }
