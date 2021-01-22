@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:richard_parker/constants/screen_size.dart';
+import 'package:richard_parker/screens/board_screen.dart';
 import 'package:richard_parker/screens/profile_screen.dart';
+import 'package:richard_parker/screens/tmp_screen.dart';
 
 // 로그아웃 버튼만 있는 임시 홈 화면
 class HomeScreen extends StatefulWidget {
@@ -20,12 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   static final List<Widget> _screens = <Widget>[
-    Container(
-      color: Colors.greenAccent,
-    ),
-    Container(
-      color: Colors.blueAccent,
-    ),
+    BoardScreen(),
+    TmpScreen(),
     Container(
       color: Colors.amberAccent,
     ),
@@ -80,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: Colors.black87,
         unselectedItemColor: Colors.grey,
         onTap: onTapBtmNavItems,
+        type: BottomNavigationBarType.shifting,
       ),
     );
   }
