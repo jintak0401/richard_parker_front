@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:richard_parker/constants/common_size.dart';
 import 'package:richard_parker/states/board_controller.dart';
 import 'package:richard_parker/widgets/board_photo_cell.dart';
 
@@ -8,6 +9,7 @@ class BoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('length: ${_.photos.length}');
     return Scaffold(
       body: SafeArea(
         child: NotificationListener<ScrollNotification>(
@@ -31,6 +33,17 @@ class BoardScreen extends StatelessWidget {
                           (index) => BoardPhotoCell(index: index)),
                     ),
                   )),
+              SliverList(
+                  delegate: SliverChildListDelegate(
+                [
+                  Center(
+                      child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: common_xxs_gap),
+                    child: CircularProgressIndicator(),
+                  ))
+                ],
+              ))
             ],
           ),
         ),
@@ -40,31 +53,29 @@ class BoardScreen extends StatelessWidget {
 
   Widget _searchAppbar() {
     return SliverAppBar(
-      title: Obx(
-        () => TextField(
-          focusNode: _.searchFocusNode,
-          decoration: InputDecoration(
-            icon: GestureDetector(
-              onTap: () {
-                _.searchFocusNode.unfocus();
+      title: TextField(
+        focusNode: _.searchFocusNode,
+        decoration: InputDecoration(
+          icon: GestureDetector(
+            onTap: () {
+              _.searchFocusNode.unfocus();
 
-                _.searchFocusNode.canRequestFocus = false;
+              _.searchFocusNode.canRequestFocus = false;
 
-                Future.delayed(Duration(milliseconds: 100), () {
-                  _.searchFocusNode.canRequestFocus = true;
-                });
-              },
-              child: Obx(
-                () => _.onSearch
-                    ? Icon(Icons.arrow_back, color: Colors.black)
-                    : SizedBox(),
-              ),
+              Future.delayed(Duration(milliseconds: 100), () {
+                _.searchFocusNode.canRequestFocus = true;
+              });
+            },
+            child: Obx(
+              () => _.onSearch
+                  ? Icon(Icons.arrow_back, color: Colors.white)
+                  : SizedBox(),
             ),
-            suffixIcon: Icon(Icons.search, color: Colors.black),
-            hintText: '검색',
-            filled: true,
-            fillColor: Colors.blueGrey,
           ),
+          suffixIcon: Icon(Icons.search, color: Colors.black),
+          hintText: '검색',
+          filled: true,
+          fillColor: Colors.blueGrey,
         ),
       ),
       floating: true,
